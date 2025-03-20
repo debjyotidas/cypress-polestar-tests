@@ -1,0 +1,19 @@
+{
+  "name": "polestar",
+  "version": "1.0.0",
+  "main": "cypress.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@cypress/code-coverage": "^3.13.12",
+    "babel-plugin-istanbul": "^7.0.0",
+    "istanbul-lib-coverage": "^3.2.2",
+    "nyc": "^17.1.0"
+  }
+}

@@ -14,4 +14,7 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+import 'cypress-real-events/support'
+// cypress/support/e2e.js
+import '@cypress/code-coverage/support'

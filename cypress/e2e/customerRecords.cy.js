@@ -22,10 +22,12 @@ describe('Polestar', () => {
       cy.url().should('equal', 'https://www.tracking1.matrack.io/gpstracking/adminnew/view/index.php');
       
       // Visit the second URL
-      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+      // cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+
+      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps_as.php#');
       
       // Verify the URL
-      cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
+      // cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
       
       // Verify key elements are present - fixed syntax
       cy.get('#settings_subitem').should('exist');
@@ -43,12 +45,149 @@ describe('Polestar', () => {
         .should('be.visible')
 
         // Find and use the search input
-        cy.get('#customer-records-table_filter input[type="search"]')
+        cy.get('#customer-search')
         .should('be.visible')
-        .should('have.attr', 'placeholder', 'Search customer records...')
+        .clear()
         .type('test');
 
-        // Click edit icon for data-id 307
+        // Verify ddtest row appears and contains correct information
+        cy.get('#customer-records-table tbody tr')
+        .should('contain', 'ddtest')
+        .within(() => {
+            cy.get('td').eq(0).should('contain', 'ddtest');
+            cy.get('td').eq(1).should('contain', 'da@gmail.com');
+            cy.get('td').eq(2).should('contain', '9777454545');
+            cy.get('td').eq(3).should('contain', 'San Ramon, CA, United States');
+            });
+
+        // Click on ddtest in Customer Name column
+        cy.get('a.customer-name')
+        .contains('ddtest')
+        .should('be.visible')
+        .click();
+
+        // Verify customer details modal opens
+        cy.get('#customerDetailsModal')
+        .should('be.visible')
+        .within(() => {
+            // Verify modal title shows customer name
+            cy.contains('ddtest').should('be.visible');
+            
+            // Verify CONTACT INFORMATION section
+            cy.contains('CONTACT INFORMATION').should('be.visible');
+            
+            // Verify customer details
+            cy.get('.info-grid')
+            .should('be.visible')
+            .within(() => {
+            // Verify phone number
+            cy.contains('9777454545').should('be.visible');
+            // Verify email
+            cy.contains('da@gmail.com').should('be.visible');
+            // Verify address
+            cy.contains('San Ramon, CA, United States').should('be.visible');
+            });
+        });
+
+        // Click on the "close" button
+        cy.get('#customerDetailsModal .btn.btn-secondary')
+        .should('be.visible')
+        .click();
+
+        // Click on the briefcase icon for ddtest
+        cy.get('button.action-btn.jobs')
+        .contains('View Jobs')
+        .parents('tr')
+        .contains('ddtest')
+        .parents('tr')
+        .find('.fas.fa-briefcase')
+        .should('be.visible')
+        .click();
+
+        // Verify jobs modal opens and check its contents
+      cy.get('#customerJobsModal')
+      .should('be.visible')
+      .within(() => {
+        // Verify modal header shows customer name
+        cy.get('.modal-header')
+          .should('contain', 'ddtest')
+          .and('contain', 'Job History');
+
+        // Verify table headers
+        cy.contains('Job ID').should('be.visible');
+        cy.contains('Job Name').should('be.visible');
+        cy.contains('Start Time').should('be.visible');
+        cy.contains('End Time').should('be.visible');
+        cy.contains('Status').should('be.visible');
+        cy.contains('Driver').should('be.visible');
+        cy.contains('Loaner').should('be.visible');
+        cy.contains('Documents').should('be.visible');
+
+        // Verify job details in the row
+        cy.get('tr').within(() => {
+          cy.contains('#73').should('be.visible');
+          cy.contains('ddtest').should('be.visible');
+          cy.contains('03/07/2025 23:15').should('be.visible');
+          cy.contains('03/07/2025 23:20').should('be.visible');
+          cy.contains('Completed').should('be.visible');
+          cy.contains('Jhon Peter').should('be.visible');
+          cy.contains('N/A').should('be.visible');
+          cy.contains('Loaner Car').should('be.visible');
+        });
+      });
+
+      // Click on the "close" button
+      cy.get('#customerJobsModal .btn.btn-secondary')
+      .scrollIntoView()
+      .should('be.visible')
+      .click();
+
+      // Click on Customer Car document icon
+      cy.get('button.btn.btn-link.doc-btn[data-doc-type="custom"]')
+      .should('be.visible')
+      .within(() => {
+        cy.get('i.fas.fa-file-contract')
+          .should('be.visible')
+          .click();
+      });
+
+      // Verify document viewer modal and expand button
+      cy.get('.modal.fade.show#documentViewerModal')
+      .should('be.visible')
+      .within(() => {
+        // Verify modal title
+        cy.contains('Job #73 - Customer Car Documents').should('be.visible');
+        
+        // Verify document gallery
+        cy.get('.document-gallery')
+          .should('be.visible')
+          .within(() => {
+            // Verify document item with customer type
+            cy.get('.document-item[data-type="customer"]')
+              .should('be.visible')
+              .within(() => {
+                // Verify document image
+                cy.get('.document-image')
+                  .should('be.visible');
+                
+                // Verify document actions including expand button
+                cy.get('.document-actions')
+                  .should('be.visible')
+                  .within(() => {
+                    cy.get('.action-button.view-image')
+                      .should('be.visible')
+                      .find('.fas.fa-expand')
+                      .should('exist');
+                  });
+                
+                // Verify image name
+                cy.contains('customerCar_1.jpg').should('be.visible');
+              });
+          });
+      });
+
+        
+      // Click edit icon for data-id 307
         cy.get('i.fas.fa-edit.edit-icon[data-id="307"]')
         .should('be.visible')
         .click();

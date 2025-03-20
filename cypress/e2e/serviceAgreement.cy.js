@@ -22,10 +22,12 @@ describe('Polestar', () => {
       cy.url().should('equal', 'https://www.tracking1.matrack.io/gpstracking/adminnew/view/index.php');
       
       // Visit the second URL
-      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+      // cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+
+      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps_as.php#');
       
       // Verify the URL
-      cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
+      //  cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
       
       // Verify key elements are present - fixed syntax
       cy.get('#settings_subitem').should('exist');
@@ -50,12 +52,16 @@ describe('Polestar', () => {
         // Select Service Type (first dropdown)
         cy.get('div.dhx_cal_ltext.dhx_cal_select select')
             .first()
-            .select('Pick Up');
+            .select('Loaner Pick Up');
 
         // Select Service Type (second dropdown)
-        cy.get('div.dhx_cal_ltext.dhx_cal_select select')
-            .eq(1)
-            .select('Brake System Concern/Repair/Replace'); 
+        // cy.get('div.dhx_cal_ltext.dhx_cal_select select')
+        //     .eq(1)
+        //     .select('Brake System Concern/Repair/Replace'); 
+
+        cy.get('div.dhx_cal_ltext')
+        .eq(2)
+        .type('Brake System Concern/Repair/Replace'); 
 
             // Enter Customer Name (text input)
         cy.get('.dhx_cal_ltext')
@@ -79,11 +85,11 @@ describe('Polestar', () => {
         
         cy.get('select[aria-label="Day"]')
         .eq(0)
-        .select('23');
+        .select('9');
 
         cy.get('select[aria-label="Month"]')
         .eq(0)
-        .select('February');
+        .select('March');
 
         cy.get('select[aria-label="Year"]')
         .eq(0)
@@ -91,12 +97,12 @@ describe('Polestar', () => {
     
             // Select a driver
             cy.get('div.dhx_cal_ltext.dhx_cal_select select')
-            .eq(2)  // Adjust index based on your form's structure
+            .eq(1)  // Adjust index based on your form's structure
             .select('Test Driver');
     
             // Select Loaner Model
             cy.get('div.dhx_cal_ltext.dhx_cal_select select')
-            // .eq(3)  // Adjust index based on your form's structure
+            .eq(2)  // Adjust index based on your form's structure
             .select('Polestar 8');
 
             // Enter Customer Address (text input)

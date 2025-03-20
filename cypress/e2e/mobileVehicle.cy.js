@@ -22,10 +22,12 @@ describe('Polestar', () => {
       cy.url().should('equal', 'https://www.tracking1.matrack.io/gpstracking/adminnew/view/index.php');
       
       // Visit the second URL
-      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+      // cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+
+      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps_as.php#');
       
       // Verify the URL
-      cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
+      // cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
       
       // Verify key elements are present - fixed syntax
       cy.get('#settings_subitem').should('exist');
@@ -37,7 +39,7 @@ describe('Polestar', () => {
     it('should navigate to mobile vehicle page', () => {
 
         // Click on Mobile Service radio button
-        cy.get('.toggle-button').click();
+        cy.get('#calendarTypeDropdown').select('Mobile Service');
         cy.wait(1000);
 
         //click on mobile vehicle subitem

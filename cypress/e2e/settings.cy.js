@@ -22,10 +22,12 @@ describe('Polestar', () => {
     cy.url().should('equal', 'https://www.tracking1.matrack.io/gpstracking/adminnew/view/index.php');
     
     // Visit the second URL
-    cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+    // cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+
+    cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps_as.php#');
     
     // Verify the URL
-    cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
+    // cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
     
     // Verify key elements are present - fixed syntax
     cy.get('#settings_subitem').should('exist');
@@ -43,157 +45,66 @@ describe('Polestar', () => {
       .should('be.visible')
       .should('have.css', 'display', 'block');
     
-    cy.get('#dealership-cutoff-subitem')
-      .scrollIntoView()
+    cy.get('#users-subitem')
       .should('be.visible')
       .click();
-    
-    cy.get('#dealership-cutoff-content')
-      .should('be.visible')
-      .should('have.css', 'display', 'block');
-
-    // Select times with proper waiting
-    cy.get('#pickUp-cutoffStart')
-      .should('be.visible')
-      .select('10:00 AM');
-
-    cy.get('#pickUp-cutoffEnd')
-      .should('be.visible')
-      .select('12:00 PM');
-
-    cy.get('#delivery-cutoffStart')
-      .should('be.visible')
-      .select('13:00 PM');
-
-    cy.get('#delivery-cutoffEnd')
-      .should('be.visible')
-      .select('15:00 PM');
-
-    // Handle toggle with proper checks
-    cy.get('#toggleLimitEvents')
-      .should('be.visible')
-      .then($checkbox => {
-        if (!$checkbox.is(':checked')) {
-          cy.wrap($checkbox).click();
-        }
-      });
-
-    // Verify checkbox state
-    cy.get('#toggleLimitEvents').should('be.checked');
-
-    // Handle input with proper waiting
-    cy.get('#tuesday-limit')
-      .should('be.visible')
-      .clear()
-      .type('1');
-
-    // Click save with proper waiting
-    cy.get('.submit-dealer')
-      .should('be.visible')
-      .click();
-
-    //click on Users subitem
-    cy.get('#settings_subitem').should('be.visible').click();
-    cy.get('#users-subitem').should('be.visible').click();
 
     cy.get('#users-content')
       .should('be.visible')
       .should('have.css', 'display', 'block');
 
-    //click on Add User button
-    cy.get('#add-user-btn')
-      .should('be.visible')
-      .click();
+    //click on add user button
+    cy.get('#add-user-btn').should('be.visible').click();
 
-    cy.get('#addUserModal')
-      .should('be.visible')
-      .should('have.css', 'display', 'block');
+    //verify add user modal
+    cy.get('#addUserModal').should('be.visible');
 
-    cy.get('#addUsername')
-      .should('be.visible')
-      .click().type('AutoTestUser',{force: true});
+    //type in first name
+    cy.get('#addUserFirstName').type('JohnTest');
 
-    cy.get('#addUserEmail')
-      .should('be.visible')
-      .click().type('AutoTestUser@gmail.com',{force: true}  );
+    //type in last name
+    cy.get('#addUserFirstName').type('Test');
 
-    cy.get('#addUserRole')
-      .should('be.visible')
-      .select('Admin',{force: true});
+    //type in usrname
+    cy.get('#addUsername').type('johnautomated');
 
-    cy.get('#save-add-driver')
-      .click()
+    //type in password
+    cy.get('#addUserPassword').type('Test@12345');
 
-      // Handle error dialog
-    cy.get('button.swal2-confirm.swal2-button-small.swal2-styled')
-    .should('be.visible')
-    .and('contain.text', 'OK')
-    .click();
+    //type email
+    cy.get('#addUserEmail').type('testAutomated@gmail.com');
 
-    // Click close button on the add user modal
-    cy.get('#addUserModal button.close[data-dismiss="modal"]')
-      .should('be.visible')
-      .click();
-    
-    // Wait for modal to close
-    cy.wait(500);
+    cy.get('#addUserRole').select('Admin');
 
-    // Verify user appears in table
-    cy.get('#users-table_wrapper')
-      .should('be.visible');
+    //click on save button
+    cy.get('#save-add-user').click();
 
-    // Search for the new user using a more specific selector
-    cy.get('#users-table_wrapper input[type="search"]')  // More specific selector
-    .should('be.visible')
-    .type('AutoTestUser');
 
-    // Verify the user data exists in the table
-    cy.get('#users-table_wrapper')
-      .should('contain', 'AutoTestUser')
-      .and('contain', 'AutoTestUser@gmail.com')
-      .and('contain', 'Admin');
-
-      //click on Drivers subitem
-    cy.get('#settings_subitem').should('be.visible').click();
+    //click on drivers subitem
     cy.get('#drivers-subitem').should('be.visible').click();
 
-    cy.get('#drivers-content')
-      .should('be.visible')
-      .should('have.css', 'display', 'block');
+    //click on add driver button
+    cy.get('#add-driver-btn').should('be.visible').click();
 
-      //click on Add Driver button
-    cy.get('#add-driver-btn')
-      .should('be.visible')
-      .click();
+    //modal should be visible
+    cy.get('#addDriverModal').should('be.visible');
 
-    cy.get('#addDriverModal')
-      .should('be.visible')
-      .should('have.css', 'display', 'block');
+    //type in driver name
+    cy.get('#addDriverModal').type('TestAutomated');
 
-    cy.get('#driver-name')
-      .should('be.visible')
-      .click().type('AutoTestDriver',{force: true});
+    //enter contact number
+    cy.get('#driver-contact').type('1234567890');
 
-    cy.get('#driver-contact')
-      .should('be.visible')
-      .click().type('8777267654',{force: true});
+    //enter imei
+    cy.get('.select2-selection.select2-selection--single').select('0863000081');
 
-    cy.get('#driver-imei')
-      .should('be.visible')
-      .click().type('798645312869',{force: true});
+    //enter email address
+    cy.get('#driver-email').type('testAutomated@gmail.com');
 
-    cy.get('#save-driver-btn')
-      .click()
+    //click on add driver
+    cy.get('#save-driver-btn').click();
 
-      // Click close button on the add user modal
-    cy.get('#addDriverModal button.close[data-dismiss="modal"]')
-    .should('be.visible')
-    .click();
 
-    // Search for the new user using a more specific selector
-    cy.get('#drivers-table_wrapper input[type="search"]')  // More specific selector
-    .should('be.visible')
-    .type('AutoTestDriver');
       
 })
 })

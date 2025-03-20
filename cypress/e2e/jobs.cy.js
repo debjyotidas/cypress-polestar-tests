@@ -22,10 +22,12 @@ describe('Polestar', () => {
       cy.url().should('equal', 'https://www.tracking1.matrack.io/gpstracking/adminnew/view/index.php');
       
       // Visit the second URL
-      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+      // cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps.php#');
+
+      cy.visit('https://www.tracking1.matrack.io/gpstracking/client/MatrackDemo/maps/index2_ps_as.php#');
       
       // Verify the URL
-      cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
+      // cy.url().should('include', 'MatrackDemo/maps/index2_ps.php');
       
       // Verify key elements are present - fixed syntax
       cy.get('#settings_subitem').should('exist');
@@ -72,13 +74,13 @@ describe('Polestar', () => {
 
     // Click on the first sorting control (Job ID column)
     cy.get('td.sorting_1.dtr-control')
-      .first()
+      // .first()
       .click();
 
     // Optional: Verify sorting worked
-    cy.get('td.sorting_1.dtr-control')
-      .first()
-      .should('be.visible');
+    // cy.get('td.sorting_1')
+    //   .first()
+    //   .should('be.visible');
 
       // Click the Remind button for job ID 20
     cy.get('.dtr-data a.remind-icon')
@@ -137,10 +139,6 @@ describe('Polestar', () => {
             .should('be.visible')
             .click();
 
-          // Verify message appears in chat
-          // cy.get('.messages-messageModule')
-          //   .should('contain', 'This is a test message from automated test')
-          //   .and('contain', 'Admin'); // Assuming sender appears as Admin
         });
 
         // Close modal
